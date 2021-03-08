@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "181058488705",
+    "project_id": "geeknote-f07db",
+    "storage_bucket": "geeknote-f07db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181058488705:android:53e86202c4c345d9794080",
+        "android_client_info": {
+          "package_name": "com.example.notesappdb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181058488705-qckc9vjdn3qltiuaf7mc3nqtefg92bnf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPL5Pl-DAEF_AutfmeqRo7Jo1dwUA0LO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181058488705-qckc9vjdn3qltiuaf7mc3nqtefg92bnf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
