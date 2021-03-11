@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/note_edit_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
@@ -11,20 +11,21 @@
         android:id="@+id/et_edit_fragment_title"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:gravity="center" />
-
-
+        android:ems="20"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/tv_edit_fragment_data"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:ems="20"
         android:gravity="end" />
 
     <EditText
         android:id="@+id/et_edit_fragment_description"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
+        android:ems="20"
         android:gravity="start" />
 
 

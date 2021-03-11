@@ -14,12 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.notesappdb.Novigation.Navigation;
+import com.example.notesappdb.Support.Support;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Navigation navigation;
+    private Support support;
     private SearchView searchText;
 
     public SearchView getSearchText() {
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        navigation = new Navigation(getSupportFragmentManager());
-        navigation.addFragment(StartFragment.newInstance(), true);
+        support = new Support(getSupportFragmentManager());
+        support.addFragment(StartFragment.newInstance(), true);
     }
 
     private void initView() {
@@ -75,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 SettingFragment settingFragment = new SettingFragment();
-                navigation.addFragment(settingFragment, true);
+                support.addFragment(settingFragment, true);
                 return true;
             case R.id.action_about:
                 AboutFragment aboutFragment = new AboutFragment();
-                navigation.addFragment(aboutFragment, true);
+                support.addFragment(aboutFragment, true);
                 return true;
         }
         return false;
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public Navigation getNavigation() {
-        return navigation;
+    public Support getSupport() {
+        return support;
     }
 }

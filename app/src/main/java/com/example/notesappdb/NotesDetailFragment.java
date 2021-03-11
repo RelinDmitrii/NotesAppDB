@@ -13,11 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class NotesDetailFragment extends Fragment {
+public class NotesDetailFragment extends Fragment implements RefreshNote {
 
     public static final String ARG_INDEX = "arg_index_notes_detail_fragment";
 
@@ -60,8 +61,8 @@ public class NotesDetailFragment extends Fragment {
         mbEditNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NoteFragmentEdit noteFragmentEdit = NoteFragmentEdit.newInstance(noteGoToEdit);
-                ((MainActivity) getActivity()).getNavigation().addFragment(noteFragmentEdit, true);
+                NoteFragmentEdit noteFragmentEdit = NoteFragmentEdit.newInstance(noteGoToEdit, NotesDetailFragment.this);
+                noteFragmentEdit.show(getActivity().getSupportFragmentManager(), "NoteFragmentEdit");
             }
         });
     }
@@ -71,26 +72,20 @@ public class NotesDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ((MainActivity) getActivity()).getSearchText().setVisibility(View.INVISIBLE);
         if (getArguments() != null) {
-            firebaseFirestore
-                    .collection(Constants.TABLE_NAME_NOTES)
-                    .document(getArguments().getString(ARG_INDEX))
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            titleNotesDetail.setText(documentSnapshot.getString("title"));
-                            dataNotesDetail.setText(documentSnapshot.getString("data"));
-                            descriptionNotesDetail.setText(documentSnapshot.getString("description"));
-                            //Вынести в отдельный метод
-                            noteGoToEdit = new Note();
-                            noteGoToEdit.setTitle(documentSnapshot.getString("title"));
-                            noteGoToEdit.setDescription(documentSnapshot.getString("description"));
-                            noteGoToEdit.setData(documentSnapshot.getString("data"));
-                            noteGoToEdit.setId(documentSnapshot.getString("id"));
-
-                        }
-                    });
+            refreshNote(getArguments().getString(ARG_INDEX));
         }
+    }
+
+    @Override
+    public void onResume() {
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                String result = bundle.getString("bundleKey");
+                descriptionNotesDetail.setText(result);
+            }
+        });
+        super.onResume();
     }
 
     @Override
@@ -104,4 +99,27 @@ public class NotesDetailFragment extends Fragment {
             }
         });
     }
+
+
+    public void refreshNote(String id) {
+        firebaseFirestore
+                .collection(Constants.TABLE_NAME_NOTES)
+                .document(id)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        titleNotesDetail.setText(documentSnapshot.getString("title"));
+                        dataNotesDetail.setText(documentSnapshot.getString("data"));
+                        descriptionNotesDetail.setText(documentSnapshot.getString("description"));
+                        //Вынести в отдельный метод
+                        noteGoToEdit = new Note();
+                        noteGoToEdit.setTitle(documentSnapshot.getString("title"));
+                        noteGoToEdit.setDescription(documentSnapshot.getString("description"));
+                        noteGoToEdit.setData(documentSnapshot.getString("data"));
+                        noteGoToEdit.setId(documentSnapshot.getString("id"));
+                    }
+                });
+    }
+
 }

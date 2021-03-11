@@ -22,4 +22,7 @@
     <string name="text_in_about_fragment">Автор данного приложения решил не упоминать свое имя)))</string>
     <string name="sign_out">Выйти</string>
     <string name="continue_">Продолжить…</string>
+    <string name="exclamation">Удалить заметку?</string>
+    <string name="buttonYes">Да</string>
+    <string name="deleteNote">УДалить заметку</string>
 </resources>

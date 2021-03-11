@@ -33,6 +33,8 @@ public class NotesFragment extends Fragment implements NotesListRvAdapter.OnItem
     private final NotesRepository repository = new NotesRepositoryImpl(this);
     private ItemTouchHelper itemTouchHelper;
 
+
+
     public static NotesFragment newInstance() {
         NotesFragment fragment = new NotesFragment();
         return fragment;
@@ -61,7 +63,10 @@ public class NotesFragment extends Fragment implements NotesListRvAdapter.OnItem
             @Override
             public void onClick(View v) {
                 NoteAddFragment fragment = new NoteAddFragment();
-                ((MainActivity) getActivity()).getNavigation().addFragment(fragment, true);
+                fragment.setOnCreateNote(() -> {
+                    repository.requestNotes();
+                });
+                fragment.show(getActivity().getSupportFragmentManager(),"NoteAddFragment");
             }
         });
         repository.requestNotes();
@@ -76,11 +81,12 @@ public class NotesFragment extends Fragment implements NotesListRvAdapter.OnItem
 
     private void startNotesDetailActivity(String index) {
         NotesDetailFragment fragment = NotesDetailFragment.newInstance(index);
-        ((MainActivity) getActivity()).getNavigation().addFragment(fragment, true);
+        ((MainActivity) getActivity()).getSupport().addFragment(fragment, true);
     }
 
     @Override
     public void onItemClick(View view, String position) {
+
         startNotesDetailActivity(position);
     }
 
@@ -110,13 +116,15 @@ public class NotesFragment extends Fragment implements NotesListRvAdapter.OnItem
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                repository.onDeleteClicked(notesListRvAdapter.getNote(viewHolder.getAdapterPosition()).id);
+                ((MainActivity) getActivity()).getSupport().addAlertDialog(NotesFragment.this, notesListRvAdapter.getNote(viewHolder.getAdapterPosition()).id);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    ;
+    public void deleteItem (String id){
+        repository.onDeleteClicked(id);
+    }
 
 
 }

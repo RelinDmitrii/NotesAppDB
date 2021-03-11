@@ -13,17 +13,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.notesappdb.MainActivity;
 import com.example.notesappdb.Note;
 import com.example.notesappdb.R;
+import com.example.notesappdb.getNotes.OnCreateNote;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Calendar;
 import java.util.UUID;
 
-public class NoteAddFragment extends Fragment implements NoteFirestoreCallbacks {
+public class NoteAddFragment extends BottomSheetDialogFragment implements NoteFirestoreCallbacks {
 
     EditText etTitle;
     TextView etData;
@@ -33,6 +36,8 @@ public class NoteAddFragment extends Fragment implements NoteFirestoreCallbacks 
     DatePickerDialog picker;
 
     private final NoteRepository repository = new NoteRepositoryImpl(this);
+
+    private OnCreateNote onCreateNote;
 
     @Nullable
     @Override
@@ -88,7 +93,8 @@ public class NoteAddFragment extends Fragment implements NoteFirestoreCallbacks 
     @Override
     public void onSuccess(@Nullable String message) {
         showToastMessage(message);
-        getActivity().onBackPressed();
+        onCreateNote.onCreateNote();
+        this.dismiss();
     }
 
     @Override
@@ -100,5 +106,9 @@ public class NoteAddFragment extends Fragment implements NoteFirestoreCallbacks 
         if (message != null) {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void setOnCreateNote(OnCreateNote onCreateNote) {
+        this.onCreateNote = onCreateNote;
     }
 }

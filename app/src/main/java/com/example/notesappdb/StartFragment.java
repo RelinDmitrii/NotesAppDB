@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.notesappdb.Novigation.Navigation;
+import com.example.notesappdb.Support.Support;
 import com.example.notesappdb.getNotes.NotesFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,7 +29,7 @@ public class StartFragment extends Fragment {
     private static final int RC_SIGN_IN = 40404;
     private static final String TAG = "GoogleAuth";
 
-    private Navigation navigation;
+    private Support support;
 
     private GoogleSignInClient googleSignInClient;
 
@@ -46,12 +46,12 @@ public class StartFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         MainActivity activity = (MainActivity) context;
-        navigation = activity.getNavigation();
+        support = activity.getSupport();
     }
 
     @Override
     public void onDetach() {
-        navigation = null;
+        support = null;
         super.onDetach();
     }
 
@@ -96,7 +96,7 @@ public class StartFragment extends Fragment {
         continueElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigation.addFragment(NotesFragment.newInstance(), false);
+                support.addFragment(NotesFragment.newInstance(), false);
             }
         });
     }

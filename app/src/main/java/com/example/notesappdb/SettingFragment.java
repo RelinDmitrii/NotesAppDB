@@ -17,7 +17,6 @@ public class SettingFragment extends Fragment {
 
         return inflater.inflate(R.layout.settings_fragment, container, false);
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

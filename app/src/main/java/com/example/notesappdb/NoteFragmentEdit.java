@@ -12,23 +12,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.notesappdb.addNote.NoteFirestoreCallbacks;
 import com.example.notesappdb.addNote.NoteRepository;
 import com.example.notesappdb.addNote.NoteRepositoryImpl;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.Calendar;
 
-public class NoteFragmentEdit extends Fragment implements NoteFirestoreCallbacks {
+public class NoteFragmentEdit extends DialogFragment implements NoteFirestoreCallbacks {
 
     public static final String ARG_INDEX = "arg_index_notes_edit_fragment";
     private DatePickerDialog picker;
     private NoteRepositoryImpl noteRepository;
+    private RefreshNote refreshNote;
 
-    public static NoteFragmentEdit newInstance(Note note) {
+    public static NoteFragmentEdit newInstance(Note note, RefreshNote refreshNote) {
         NoteFragmentEdit fragment = new NoteFragmentEdit();
+        fragment.refreshNote = refreshNote;
         Bundle bundle = new Bundle();
         bundle.putSerializable("NoteObject", note);
         fragment.setArguments(bundle);
@@ -58,8 +62,6 @@ public class NoteFragmentEdit extends Fragment implements NoteFirestoreCallbacks
             textViewData.setText(note.data);
             editTextDescription.setText(note.description);
         }
-
-
     }
 
     @Override
@@ -83,6 +85,7 @@ public class NoteFragmentEdit extends Fragment implements NoteFirestoreCallbacks
             public void onClick(View v) {
                 noteRepository = new NoteRepositoryImpl(NoteFragmentEdit.this);
                 noteRepository.setNote(((Note) getArguments().getSerializable("NoteObject")).id, textViewTitle.getText().toString(), editTextDescription.getText().toString(), textViewData.getText().toString());
+
             }
         });
     }
@@ -90,7 +93,10 @@ public class NoteFragmentEdit extends Fragment implements NoteFirestoreCallbacks
     @Override
     public void onSuccess(@Nullable String message) {
         Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
+        refreshNote.refreshNote(((Note) getArguments().getSerializable("NoteObject")).id);
+        this.dismiss();
+
+
     }
 
     @Override
